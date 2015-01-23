@@ -8,35 +8,68 @@
 #include "clcg_rnd_gen.hpp"
 #include "cmt_rand_int32.hpp"
 
+using namespace std;
+
+const int NUM_TESTS        = 1;
+const int NUM_PUBLIC_SEEDS = 10;
+const int NUM_SAMPLES      = 10;
+
+// NUM_TESTS times, generate NUM_PUBLIC_SEEDS seeds and two static seeds with 
+// MT, xor them together and use the result NUM_SAMPLES times to produce random
+// values with a CLCG generator. Print the pairs side by side.
+
+// Later, a python script will calculate the cross-correlation between the CLCG
+// sets generated with shared public seeds.
 int main(int argc, char** arvs)
 {
-    // uint32 seed1 = MT.Random();
-    // uint32 seed2 = MT.Random();
+    CMTRand_int32 mt_gen;
 
-    // for (samples) { 
-    //      uint32 seed=MT.Random(); 
-    //      LCG rng1(seed1 ^ seed);
-    //      LCG rng2(seed2 ^ seed); 
-    //      [test results of rng1 vs rng2] }
-    //      with iterations for different seed1 & 2 also
-    CLCGRndGen n;
-    CMTRand_int32 o;
+    for(int i = 0; i < NUM_TESTS; i++)
+    {
+        uint32 static_seed_a = mt_gen.GenerateUint32();
+        uint32 static_seed_b = mt_gen.GenerateUint32();
+        cout    << endl 
+                << "\tStatic Seeds: [" 
+                << boost::lexical_cast<unsigned long>(static_seed_a)
+                << ", "
+                << boost::lexical_cast<unsigned long>(static_seed_b)
+                << "]"
+                << endl;
 
-    std::cout << boost::lexical_cast<unsigned long>(n.GenerateUint32()) << 
-            std::endl << boost::lexical_cast<unsigned long>(o.GenerateUint32()) 
-            << std::endl;
+        for(int j = 0; j < NUM_PUBLIC_SEEDS; j++)
+        {
+            uint32 public_seed = mt_gen.GenerateUint32();
+            CLCGRndGen remote_gen_a(static_seed_a ^ public_seed);
+            CLCGRndGen remote_gen_b(static_seed_b ^ public_seed);
 
-    std::cout << boost::lexical_cast<unsigned long>(n.GenerateUint32()) << 
-            std::endl << boost::lexical_cast<unsigned long>(o.GenerateUint32()) 
-            << std::endl;
+            cout    << "[" 
+                    << boost::lexical_cast<unsigned long>(public_seed) 
+                    << "\t^\t" 
+                    << boost::lexical_cast<unsigned long>(static_seed_a) 
+                    << "]\t";
 
-    std::cout << boost::lexical_cast<unsigned long>(n.GenerateUint32()) << 
-            std::endl << boost::lexical_cast<unsigned long>(o.GenerateUint32()) 
-            << std::endl;
+            for(int k = 0; k < NUM_SAMPLES; k++)
+            {
+                cout    << boost::lexical_cast<unsigned long>(remote_gen_a.GenerateUint32())
+                        << "\t";
+            }
 
-    std::cout << boost::lexical_cast<unsigned long>(n.GenerateUint32()) << 
-            std::endl << boost::lexical_cast<unsigned long>(o.GenerateUint32()) 
-            << std::endl;
+            cout    << endl 
+                    << "[" 
+                    << boost::lexical_cast<unsigned long>(public_seed) 
+                    << "\t^\t" 
+                    << boost::lexical_cast<unsigned long>(static_seed_b) 
+                    << "]\t";
+
+            for(int k = 0; k < NUM_SAMPLES; k++)
+            {
+                cout    << boost::lexical_cast<unsigned long>(remote_gen_a.GenerateUint32())
+                        << "\t";
+            }
+
+            cout << endl;
+        }
+    }
 
     return 0;
 }
