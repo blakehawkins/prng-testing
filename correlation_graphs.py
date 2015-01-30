@@ -65,8 +65,12 @@ for line in sys.stdin:
             # cross-correlate
             cross_correl = correlate(s0, s1)
 
-            plot.plot(xs, s0, 'ro', xs, s1, 'bo', xc, cross_correl, 'k')
+            plot.plot(xs, s0, 'ro', label='samples 0')
+            plot.plot(xs, s1, 'bo', label='samples 1')
+            plot.plot(xc, cross_correl, 'k', label='sample correlation')
+            legend = plot.legend()
             plot.show()
+
 
             state = STATE_SAMPLES_A
 

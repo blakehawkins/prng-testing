@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const int NUM_TESTS        = 1;
+const int NUM_TESTS        = 10;
 const int NUM_PUBLIC_SEEDS = 10;
 const int NUM_SAMPLES      = 100;
 
