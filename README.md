@@ -50,3 +50,11 @@ Customization
 * The number of graphs generated (one per CLCG instance) can be adjusted in
 `correlation_graphs.py`
 * The number of histogram bins can be adjusted in `correlation_stats.py`
+
+Requirements
+------------
+
+* The makefile uses g++ to compile; a linux environment is desirable but will
+build in cygwin as well.
+* Python 2.7, numpy, and matplotlib are required to generate stats and graphs.
+Tested with python 2.7 AMD64, numpy 1.9 AMD64, and matplotlib 1.2 AMD64
