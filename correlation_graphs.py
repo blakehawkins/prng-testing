@@ -63,6 +63,7 @@ for line in sys.stdin:
 
             xs = np.arange(0, len(s0), 1)
             xc = np.arange(0, 2 * len(s0) - 1, 1)
+            xc -= (len(s0) / 2)
 
             # cross-correlate
             cross_correl = correlate(s0, s1)
