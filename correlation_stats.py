@@ -6,7 +6,8 @@ STATE_STATIC_SEEDS = 0
 STATE_SAMPLES_A    = 1
 STATE_SAMPLES_B    = 2
 
-MAX_GRAPHS_GENERATED = 3
+
+HISTOGRAM_BINS = 20
 
 graphs_generated = 0
 
@@ -75,7 +76,7 @@ print ("Maximum cross-correlation:\t" + str(max(correls)))
 print ("Average peak cross-correlation:\t" + str(np.average(correls)))
 print ("Histogram of peak cross-correlations:")
 
-linsp = np.linspace(min(correls), max(correls), 20)
+linsp = np.linspace(min(correls), max(correls), HISTOGRAM_BINS)
 
 hist = np.histogram(correls, linsp)[0]
 
