@@ -1,6 +1,7 @@
 #! /usr/bin/python
 import sys, os, re
 import numpy as np
+import matplotlib.pyplot as plot
 
 STATE_STATIC_SEEDS = 0
 STATE_SAMPLES_A    = 1
@@ -15,10 +16,14 @@ cross_correl  = []
 
 state = STATE_STATIC_SEEDS
 
+tmp_max = 0
+
+def div_max(sample):
+    return sample / tmp_max;
+
 def correlate(samples_a, samples_b):
-    samples_a = (samples_a - np.mean(samples_a) / (np.std(samples_a) * len(samples_a)))
-    samples_b = (samples_b - np.mean(samples_b) / np.std(samples_b))
-    return np.correlate(samples_a, samples_b, 'full')
+    c0 = np.correlate(samples_a, samples_b, 'full')
+    return c0 / float(len(samples_a))
 
 for line in sys.stdin:
     line = line.strip()
@@ -40,8 +45,33 @@ for line in sys.stdin:
             samples[1] = temp_samples.split('\t')
             uniq_seeds[1] = int(public_seed)^int(static_seed_b)
 
+            # get float versions of samples
+            s0 = map(np.float64, samples[0])
+            s1 = map(np.float64, samples[1])
+
+            # scale samples down to [0.0, 2.0]
+            s0 /= (0.5 * max(s0))
+            s1 /= (0.5 * max(s1))
+
+            # subtract 1 to make [-1.0, 1.0]
+            s0 -= 1.0
+            s1 -= 1.0
+
+            xs = np.arange(0, 100, 1)
+            xc = np.arange(0, 199, 1)
+
             # cross-correlate
-            cross_correl = correlate(map(int, samples[0]), map(int, samples[1]))
-            print cross_correl
+            cross_correl = correlate(s0, s1)
+
+            # print s0
+            # print s1
+            # print cross_correl
+
+            # print len(samples[0]), len(xs), len(cross_correl), len(xc)
+
+            plot.plot(xs, s0, 'ro', xs, s1, 'bo', xc, cross_correl, 'k')
+            plot.show()
 
             state = STATE_SAMPLES_A
+
+            # break

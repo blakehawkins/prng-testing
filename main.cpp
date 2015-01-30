@@ -12,7 +12,7 @@ using namespace std;
 
 const int NUM_TESTS        = 1;
 const int NUM_PUBLIC_SEEDS = 10;
-const int NUM_SAMPLES      = 10;
+const int NUM_SAMPLES      = 100;
 
 // NUM_TESTS times, generate NUM_PUBLIC_SEEDS seeds and two static seeds with 
 // MT, xor them together and use the result NUM_SAMPLES times to produce random
@@ -50,7 +50,7 @@ int main(int argc, char** arvs)
 
             for(int k = 0; k < NUM_SAMPLES; k++)
             {
-                cout    << boost::lexical_cast<unsigned long>(remote_gen_a.GenerateUint32())
+                cout    << boost::lexical_cast<uint32>(remote_gen_a.GenerateUint32())
                         << "\t";
             }
 
@@ -63,7 +63,7 @@ int main(int argc, char** arvs)
 
             for(int k = 0; k < NUM_SAMPLES; k++)
             {
-                cout    << boost::lexical_cast<unsigned long>(remote_gen_a.GenerateUint32())
+                cout    << boost::lexical_cast<uint32>(remote_gen_b.GenerateUint32())
                         << "\t";
             }
 
