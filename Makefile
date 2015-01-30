@@ -19,8 +19,11 @@ bin/%.o: %.cpp
 	$(CC) $(CLFAGS) $(DEBUG) -c -o $@ $<
 
 
-run: clean bin/main
+only: clean bin/main
 	chmod +x bin/main
+
+
+run: only
 	./bin/main
 
 
