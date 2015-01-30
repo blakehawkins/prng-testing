@@ -7,6 +7,10 @@ STATE_STATIC_SEEDS = 0
 STATE_SAMPLES_A    = 1
 STATE_SAMPLES_B    = 2
 
+MAX_GRAPHS_GENERATED = 3
+
+graphs_generated = 0
+
 static_seed_a = 0
 static_seed_b = 0
 public_seed   = 0
@@ -74,4 +78,6 @@ for line in sys.stdin:
 
             state = STATE_SAMPLES_A
 
-            # break
+            graphs_generated += 1
+            if graphs_generated >= MAX_GRAPHS_GENERATED:
+                break
