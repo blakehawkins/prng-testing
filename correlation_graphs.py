@@ -61,8 +61,8 @@ for line in sys.stdin:
             s0 -= 1.0
             s1 -= 1.0
 
-            xs = np.arange(0, 100, 1)
-            xc = np.arange(0, 199, 1)
+            xs = np.arange(0, len(s0), 1)
+            xc = np.arange(0, 2 * len(s0) - 1, 1)
 
             # cross-correlate
             cross_correl = correlate(s0, s1)
