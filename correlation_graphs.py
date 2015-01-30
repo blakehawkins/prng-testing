@@ -20,10 +20,7 @@ cross_correl  = []
 
 state = STATE_STATIC_SEEDS
 
-tmp_max = 0
 
-def div_max(sample):
-    return sample / tmp_max;
 
 def correlate(samples_a, samples_b):
     c0 = np.correlate(samples_a, samples_b, 'full')
@@ -67,12 +64,6 @@ for line in sys.stdin:
 
             # cross-correlate
             cross_correl = correlate(s0, s1)
-
-            # print s0
-            # print s1
-            # print cross_correl
-
-            # print len(samples[0]), len(xs), len(cross_correl), len(xc)
 
             plot.plot(xs, s0, 'ro', xs, s1, 'bo', xc, cross_correl, 'k')
             plot.show()
